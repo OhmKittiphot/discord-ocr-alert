@@ -25,11 +25,12 @@ else:
 # ==========================================
 # ตั้งค่า
 # ==========================================
-REGION = (0, 0, 500, 300)
+# จับทั้งหน้าจอแบบเต็มจอ
+REGION = None
 KEYWORDS = ["Secret", "Divine", "Eternal"]
 CHECK_INTERVAL = 2
 THRESHOLD = 150
-DEBUG = False
+DEBUG = True
 COOLDOWN_SECONDS = 30
 
 
@@ -96,7 +97,7 @@ def main():
 
     while True:
         try:
-            screenshot = ImageGrab.grab(bbox=REGION)
+            screenshot = ImageGrab.grab() if REGION is None else ImageGrab.grab(bbox=REGION)
             processed = preprocess_image(screenshot)
             text = pytesseract.image_to_string(processed)
 
