@@ -35,7 +35,7 @@ KEYWORDS = ["spawned in"]
 CHECK_INTERVAL = 2
 THRESHOLD = 150
 DEBUG = False
-COOLDOWN_SECONDS = 30
+COOLDOWN_SECONDS = 230
 
 
 def preprocess_image(img):
@@ -120,13 +120,6 @@ def main():
             now = time.time()
 
             for kw in set(found_keywords):
-                last_time = last_alert_time.get(kw, 0)
-                if now - last_time >= COOLDOWN_SECONDS:
-                    alert(kw)
-                    last_alert_time[kw] = now
-
-            if not found_keywords and any("spawned in" in line.lower() for line in unique_lines):
-                kw = "spawned in"
                 last_time = last_alert_time.get(kw, 0)
                 if now - last_time >= COOLDOWN_SECONDS:
                     alert(kw)
