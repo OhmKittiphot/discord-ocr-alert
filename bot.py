@@ -27,7 +27,7 @@ else:
 # ==========================================
 REGION = (0, 0, 500, 300)
 KEYWORDS = ["Secret", "Divine", "Eternal"]
-CHECK_INTERVAL = 60
+CHECK_INTERVAL = 2
 THRESHOLD = 150
 DEBUG = False
 COOLDOWN_SECONDS = 30
