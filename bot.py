@@ -26,7 +26,7 @@ else:
 # ตั้งค่า
 # ==========================================
 REGION = (0, 0, 500, 300)
-KEYWORDS = ["Secret", "Divine"]
+KEYWORDS = ["Secret", "Divine", "Eternal"]
 CHECK_INTERVAL = 60
 THRESHOLD = 150
 DEBUG = False
