@@ -25,12 +25,16 @@ else:
 # ==========================================
 # ตั้งค่า
 # ==========================================
-# จับทั้งหน้าจอแบบเต็มจอ
-REGION = None
-KEYWORDS = ["Secret", "Divine", "Eternal"]
+# จัดจอ 1920x1080 เป็น 4 ส่วน:
+# ซ้ายบน = (0, 0, 960, 540)
+# ขวาบน = (960, 0, 960, 540)
+# ซ้ายล่าง = (0, 540, 960, 540)
+# ขวาล่าง = (960, 540, 960, 540)
+REGION = (0, 0, 960, 540)
+KEYWORDS = ["spawned in"]
 CHECK_INTERVAL = 2
 THRESHOLD = 150
-DEBUG = True
+DEBUG = False
 COOLDOWN_SECONDS = 30
 
 
@@ -69,7 +73,7 @@ def send_discord_alert(keyword):
         return
 
     payload = {
-        "content": f"🔔 **พบไข่หายาก!** ตรวจพบคำว่า: `{keyword}`"
+        "content": "🔔 **พบไข่หายาก!**"
     }
 
     try:
@@ -97,7 +101,7 @@ def main():
 
     while True:
         try:
-            screenshot = ImageGrab.grab() if REGION is None else ImageGrab.grab(bbox=REGION)
+            screenshot = ImageGrab.grab(bbox=REGION)
             processed = preprocess_image(screenshot)
             text = pytesseract.image_to_string(processed)
 
@@ -116,6 +120,13 @@ def main():
             now = time.time()
 
             for kw in set(found_keywords):
+                last_time = last_alert_time.get(kw, 0)
+                if now - last_time >= COOLDOWN_SECONDS:
+                    alert(kw)
+                    last_alert_time[kw] = now
+
+            if not found_keywords and any("spawned in" in line.lower() for line in unique_lines):
+                kw = "spawned in"
                 last_time = last_alert_time.get(kw, 0)
                 if now - last_time >= COOLDOWN_SECONDS:
                     alert(kw)
