@@ -1,7 +1,6 @@
 import os
 import time
 import re
-import winsound
 import requests
 from dotenv import load_dotenv
 from PIL import ImageGrab
@@ -25,14 +24,11 @@ else:
 # ==========================================
 # ตั้งค่า
 # ==========================================
-# จัดจอ 1920x1080 เป็น 4 ส่วน:
-# ซ้ายบน = (0, 0, 960, 540)
-# ขวาบน = (960, 0, 960, 540)
-# ซ้ายล่าง = (0, 540, 960, 540)
-# ขวาล่าง = (960, 540, 960, 540)
-REGION = (0, 0, 960, 540)
+# มองเห็นเฉพาะส่วนบนของจอ (ซ้ายบน + ขวาบน)
+# ครอบคลุมครึ่งบนทั้งความกว้างของจอ: 1920x540
+REGION = (0, 0, 1920, 540)
 KEYWORDS = ["spawned in"]
-CHECK_INTERVAL = 2
+CHECK_INTERVAL = 1
 THRESHOLD = 150
 DEBUG = False
 COOLDOWN_SECONDS = 230
@@ -88,10 +84,6 @@ def send_discord_alert(keyword):
 
 def alert(keyword):
     print(f"🔔 พบไข่หายาก! -> {keyword}")
-    try:
-        winsound.Beep(1000, 500)
-    except RuntimeError:
-        pass
     send_discord_alert(keyword)
 
 
